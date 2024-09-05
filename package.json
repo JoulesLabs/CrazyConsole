@@ -1,0 +1,21 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@hotwired/turbo": "^8.0.4",
+        "axios": "^1.6.4",
+        "laravel-echo": "^1.15.0",
+        "laravel-vite-plugin": "^1.0",
+        "pusher-js": "^8.0.1",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "@hotwired/stimulus": "^3.2.2",
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "^5.3.3"
+    }
+}
