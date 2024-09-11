@@ -136,7 +136,7 @@ class RoleController extends Controller
 
             if ($request->wantsTurboStream()) {
                 return turbo_stream([
-                    turbo_stream()->update('role-update', view('roles.partials.create', ['action' => 'update', 'abilities' => Permit::getAbilities(), 'role' => $role])),
+                    turbo_stream()->update('role-update', view('roles.partials.create', ['action' => 'update', 'abilities' => Permit::getAbilities(), 'role' => $role, 'selectedPermissions' => $role->permission_array])),
                     turbo_stream()->notice(NoticeType::SUCCESS, "Successfully updated role!"),
                 ]);
             }

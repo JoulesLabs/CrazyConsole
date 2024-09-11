@@ -7,9 +7,8 @@
         @foreach($permissions as $permission)
             @php
                 $ability = $module . '.' . $permission;
-                $selectedPermissions = [];
-                if (isset($role)) {
-                    $selectedPermissions = $role->permission_array;
+                if (!isset($selectedPermissions)) {
+                    $selectedPermissions = [];
                 }
             @endphp
             <div class="col col-md-3">

@@ -7,7 +7,7 @@
 
 @section('contents')
 
-        @include('roles.partials.create', ['action' => 'update'])
+        @include('roles.partials.create', ['action' => 'update', 'selectedPermissions' => $role->permission_array])
 
 @endsection
 
