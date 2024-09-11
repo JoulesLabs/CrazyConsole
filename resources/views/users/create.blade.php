@@ -15,26 +15,18 @@
         @include('users.partials.create')
     </x-card>
 
-    <x-accordion id="a1">
-        <x-accordion.item identifier="item1" parent-id="a1">
-            <x-slot:title>
-                Accordion Item 1
-            </x-slot:title>
-            <p>
-                Accordion Item 1 Content
-            </p>
-        </x-accordion.item>
+    <x-input.radio name="name" label="Accept" />
 
-        <x-accordion.item identifier="item2" parent-id="a1">
-            <x-slot:title>
-                Accordion Item 2
-            </x-slot:title>
-            <p>
-                Accordion Item 2 Content
-            </p>
-        </x-accordion.item>
-    </x-accordion>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <input class="btn-check" id="btn-check-1" type="radio" autocomplete="off"  name="deny">
+        <label class="btn btn-danger" for="btn-check-1">Deny</label>
 
+        <input class="btn-check" id="btn-check-2" type="radio"  autocomplete="off"  name="default">
+        <label class="btn btn-primary" for="btn-check-2">Default</label>
+
+        <input class="btn-check" id="btn-check-3" type="radio"  autocomplete="off"  name="allow">
+        <label class="btn btn-success" for="btn-check-3">Allow</label>
+    </div>
 @endsection
 
 

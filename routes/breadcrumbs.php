@@ -14,7 +14,9 @@ Breadcrumbs::for('home', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('insight', function (BreadcrumbTrail $trail) {
     $trail->push('Insight', route('insight'));
 });
-
+/**
+ * Users breadcrumbs
+ */
 Breadcrumbs::for('users', function (BreadcrumbTrail $trail) {
     $trail->push('Users');
 });
@@ -25,5 +27,23 @@ Breadcrumbs::for('users_create', function (BreadcrumbTrail $trail) {
 });
 Breadcrumbs::for('users_edit', function (BreadcrumbTrail $trail) {
     $trail->push('Users', route('users.index'));
+    $trail->push('Edit');
+});
+
+
+/**
+ * Roles breadcrumbs
+ */
+
+Breadcrumbs::for('roles', function (BreadcrumbTrail $trail) {
+    $trail->push('Roles');
+});
+
+Breadcrumbs::for('roles_create', function (BreadcrumbTrail $trail) {
+    $trail->push('Roles', route('roles.index'));
+    $trail->push('Create');
+});
+Breadcrumbs::for('roles_edit', function (BreadcrumbTrail $trail) {
+    $trail->push('Roles', route('roles.index'));
     $trail->push('Edit');
 });

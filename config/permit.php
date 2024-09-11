@@ -9,13 +9,14 @@ return [
 
     'roles_table' => 'roles',
     'user_roles_table' => 'user_roles',
-    
+
     'debug' => [
         'superuser_mode' => false,
     ],
 
     'abilities'   => [
-        /*"module"  => ['create', 'update', 'delete'],*/
+        "user"  => ['create', 'update', 'delete', 'permission'],
+        'role'  => ['create', 'update', 'delete'],
     ],
 
 

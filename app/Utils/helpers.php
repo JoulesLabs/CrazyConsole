@@ -1,5 +1,12 @@
 <?php
 
+if (!function_exists('user')) {
+    function user(?string $guard = 'web'): ?\Illuminate\Contracts\Auth\Authenticatable
+    {
+        return auth($guard)->user();
+    }
+}
+
 if (!function_exists('main_frame')) {
     function main_frame($frame = ''): string
     {
