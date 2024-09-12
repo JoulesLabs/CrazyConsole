@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Nahid\Permit\Facades\Permit;
+use Nahid\Permit\Roles\Role;
 
 class UserController extends Controller
 {
@@ -19,7 +21,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -30,7 +33,12 @@ class UserController extends Controller
                 'email' => 'required|email',
                 'password' => 'required|confirmed',
             ]);
-            $user = User::create($data);
+            $user = new User();
+            $user->fill($data);
+
+            if ($user->save()) {
+                $user->roles()->withTimestamps()->sync($request->input('roles', []));
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             if ($request->wantsTurboStream()) {
                 return turbo_stream([
@@ -44,7 +52,7 @@ class UserController extends Controller
         catch (\Exception $e) {
             if ($request->wantsTurboStream()) {
                 return turbo_stream([
-                    turbo_stream()->notice(NoticeType::ERROR, "User creation failed!"),
+                    turbo_stream()->notice(NoticeType::ERROR, $e->getMessage()),
                 ]);
             }
 
@@ -53,8 +61,9 @@ class UserController extends Controller
 
 
         if ($request->wantsTurboStream()) {
+            $roles = Role::all();
             return turbo_stream([
-                turbo_stream()->update('user-create', view('users.partials.create')),
+                turbo_stream()->update('user-create', view('users.partials.create', compact('roles'))),
                 turbo_stream()->notice(NoticeType::SUCCESS, "User {$request->name} was created!"),
             ]);
         }
@@ -66,11 +75,13 @@ class UserController extends Controller
     public function edit(int $id)
     {
         $user = User::find($id);
+        $abilities = Permit::getAbilities();
+        $roles = Role::all();
 
-        return view('users.edit', compact('user'));
+        return view('users.edit', compact('user', 'abilities', 'roles'));
     }
 
-    public function update(Request $request)
+    public function update(int $id, Request $request)
     {
         try {
             $data = $request->validate([
@@ -83,9 +94,15 @@ class UserController extends Controller
                 unset($data['password']);
             }
 
-            $user = User::find($request->id);
+            $data['permissions'] = $request->input('permissions');
 
-            $user->update($data);
+            $user = User::findOrFail($id);
+
+            $user->fill($data);
+
+            if ($user->save()) {
+                $user->roles()->sync($request->input('roles', null));
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             if ($request->wantsTurboStream()) {
                 return turbo_stream([
@@ -106,7 +123,6 @@ class UserController extends Controller
             return back()->with('error', 'An error occurred while creating the user.');
         }
 
-
         return redirect('/users')->with(['_notice' => 'User updated successfully!', '_status' => 'success']);
 
     }
@@ -114,13 +130,12 @@ class UserController extends Controller
     public function destroy(int $id, Request $request)
     {
         $user = User::find($id);
-        $id = $user->id;
 
         $user->delete();
 
         if ($request->wantsTurboStream()) {
             return turbo_stream([
-                turbo_stream()->update('user-' . $id),
+                turbo_stream()->replace(frame($user)),
                 turbo_stream()->notice(NoticeType::SUCCESS, "User {$user->name} was deleted!"),
             ]);
         }

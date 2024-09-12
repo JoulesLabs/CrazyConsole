@@ -1,4 +1,4 @@
-<div id="user-create">
+<x-turbo::frame id="user-create">
     <form action="{{ route('users.store') }}" method="post">
         <div class="row">
             <div class="col">
@@ -20,6 +20,16 @@
                 <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" aria-label="Last name">
             </div>
         </div>
+        <div class="row mt-4" data-controller="select2">
+            <div class="col">
+                <label for="" class="form-label">Roles</label>
+                <select class="form-select form-select-sm select2-tags" name="roles[]" multiple aria-label="Default select example">
+                    @foreach($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
         <div class="row mt-4">
             <div class="col" style="text-align: right;">
                 @csrf
@@ -28,4 +38,4 @@
             </div>
         </div>
     </form>
-</div>
+</x-turbo::frame>

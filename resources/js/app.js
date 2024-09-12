@@ -2,6 +2,9 @@ import './bootstrap';
 import './elements/turbo-echo-stream-tag';
 import './libs';
 import { Application } from "@hotwired/stimulus"
+import $ from 'jquery';
+
+window.$ = window.jQuery = $;
 
 // window.$ = window.jQuery = $;
 
@@ -11,6 +14,7 @@ import NavMenuController from './controllers/navmenu_controller.js';
 import ProfileNavController from './controllers/profile_nav_controller.js';
 import AccordionController from './controllers/accordion_controller.js';
 import PermissionController from './controllers/permission_controller.js';
+import Select2Controller from './controllers/select2_controller.js';
 
 
 const application = Application.start();
@@ -21,3 +25,4 @@ application.register('navmenu', NavMenuController);
 application.register('profile_nav', ProfileNavController);
 application.register('accordion', AccordionController);
 application.register('permission', PermissionController);
+application.register('select2', Select2Controller);

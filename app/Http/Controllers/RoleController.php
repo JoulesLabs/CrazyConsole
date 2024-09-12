@@ -134,14 +134,7 @@ class RoleController extends Controller
                 return redirect()->back()->with(['_status' => 'error', '_notice' => 'Unable to update the data!']);
             }
 
-            if ($request->wantsTurboStream()) {
-                return turbo_stream([
-                    turbo_stream()->update('role-update', view('roles.partials.create', ['action' => 'update', 'abilities' => Permit::getAbilities(), 'role' => $role, 'selectedPermissions' => $role->permission_array])),
-                    turbo_stream()->notice(NoticeType::SUCCESS, "Successfully updated role!"),
-                ]);
-            }
-
-            return redirect()->back()->with(['_status' => 'success', '_notice' => 'Successfully updated role!']);
+            return redirect('/roles')->with(['_status' => 'success', '_notice' => 'Successfully updated role!']);
         }
 
     public function destroy(int $id, Request $request)

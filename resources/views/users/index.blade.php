@@ -6,13 +6,13 @@
 @endsection
 
 @section('contents')
-    <div id="user-index" data-controller="alert">
+    <x-turbo::frame id="user-index" data-controller="alert">
       <x-card>
         <x-slot:title>
             Users
         </x-slot:title>
 
-          <table class="table">
+          <table class="table table-bordered table-hover">
               <thead>
               <tr>
                   <th scope="col">Name</th>
@@ -22,12 +22,12 @@
               </thead>
               <tbody>
               @foreach($users as $user)
-                  <tr id="user-{{ $user->id }}">
+                  <tr @frameid($user)>
                       <td>{{ $user->name }}</td>
                       <td>{{ $user->email }}</td>
                       <td>
                           <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-primary btn-sm" data-turbo-target="_top">Edit</a>
-                          <a href="{{ route('users.delete', ['id' => $user->id]) }}" class="btn btn-danger btn-sm"  data-turbo-confirm="Are you sure to delete user {{ $user->name }}?" data-turbo-method="delete" data-turbo-csrf-token="{{ csrf_token() }}">Delete</a>
+                          <a href="{{ route('users.delete', ['id' => $user->id]) }}" class="btn btn-danger btn-sm"  data-turbo-confirm="Are you sure to delete user {{ $user->name }}?" data-turbo-method="delete" data-turbo-csrf-token="{{ csrf_token() }}" data-target="{{ frame($user) }}">Delete</a>
                       </td>
                   </tr>
               @endforeach
@@ -36,6 +36,6 @@
 
       </x-card>
 
-    </div>
+    </x-turbo::frame>
 @endsection
 

@@ -12,9 +12,13 @@
             User Create
         </x-slot:title>
 
-        @include('users.partials.create')
+        @include('users.partials.create', ['roles' => $roles])
     </x-card>
 
 @endsection
 
+
+@push('scripts')
+
+@endpush
 

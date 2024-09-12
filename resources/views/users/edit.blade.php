@@ -2,12 +2,12 @@
 
 @section('title', 'CrazyConsole | User Edit')
 @section('breadcrumbs')
-    {{ Breadcrumbs::render('users_create') }}
+    {{ Breadcrumbs::render('users_edit') }}
 @endsection
 
 @section('contents')
 
-        @include('users.partials.edit')
+        @include('users.partials.edit', ['abilities' => $abilities, 'selectedPermissions' => $user->abilities, 'user' => $user, 'roles' => $roles])
 
 @endsection
 

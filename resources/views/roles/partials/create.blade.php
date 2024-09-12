@@ -6,9 +6,9 @@ $_route_params = [];
 if ($_action == 'update' && isset($role)) {
     $_route_params = ['id' => $role->id];
 }
-
 @endphp
-<div id="role-{{ $_action }}" data-controller="permission">
+
+<x-turbo::frame id="role-{{ $_action }}" target="_top" data-controller="permission">
     <x-card>
         <x-slot:title>
             Role {{ ucfirst($_action) }}
@@ -35,4 +35,4 @@ if ($_action == 'update' && isset($role)) {
             <x-button.primary type="submit">{{ ucfirst($_action) }}</x-button.primary>
         </form>
     </x-card>
-</div>
+</x-turbo::frame>

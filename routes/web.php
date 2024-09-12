@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
     Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
     Route::get('/users/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+    Route::put('/users/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
 
     Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name('roles.index');

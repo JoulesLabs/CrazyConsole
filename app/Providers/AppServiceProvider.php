@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Enums\NoticeType;
 use HotwiredLaravel\TurboLaravel\Facades\Turbo;
 use HotwiredLaravel\TurboLaravel\Http\PendingTurboStreamResponse;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
                 'type' => $type,
                 'message' => $message,
             ]));
+        });
+
+        Blade::directive('frameid', function ($expression) {
+
+            return "<?php echo e(frameid($expression)); ?>";
         });
     }
 }
