@@ -6,7 +6,7 @@
 @endsection
 
 @section('contents')
-    <x-turbo::frame id="user-index" data-controller="alert">
+    <x-dom.frame id="user-index" controller="alert">
       <x-card>
         <x-slot:title>
             Users
@@ -36,6 +36,6 @@
 
       </x-card>
 
-    </x-turbo::frame>
+    </x-dom.frame>
 @endsection
 

@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::directive('frameid', function ($expression) {
 
-            return "<?php echo e(frameid($expression)); ?>";
+            return "<?php echo frameid($expression); ?>";
         });
     }
 }
