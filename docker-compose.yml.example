@@ -1,0 +1,88 @@
+services:
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        volumes:
+            - ./.docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./.docker/nginx/admin/local.conf:/etc/nginx/conf.d/default.conf #admin
+            - ./:/var/www/admin
+            - ./.data/nginx/logs:/var/log/nginx
+            # - ./.data/certs/certbot/conf:/etc/letsencrypt #uncomment when production deploy
+            # - ./.data/certs/certbot/www:/var/www/certbot #uncomment when production deploy
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - admin
+        networks:
+            - crazyconsole_network
+
+    admin:
+        build:
+            context: .
+            dockerfile: ./.docker/admin/8.3-fpm/Dockerfile
+        container_name: admin
+        volumes:
+            - ./:/var/www/admin
+        restart: always
+        networks:
+            - crazyconsole_network
+        environment:
+            - X_SERVER_TYPE=admin
+
+    database:
+        container_name: database
+        image: postgres:16
+        environment:
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_DATABASE}
+            PGDATA: /data/postgres
+        volumes:
+            - ./.data/postgres:/data/postgres
+        ports:
+            - "5432:5432"
+        restart: always
+        networks:
+            - crazyconsole_network
+
+    redis:
+        image: redis:latest
+        container_name: redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./.data/redis:/data
+        command: redis-server --appendonly yes
+        networks:
+            - crazyconsole_network
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+
+    mailpit:
+        image: axllent/mailpit:latest
+        container_name: mailpit
+        restart: always
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+        networks:
+            - crazyconsole_network
+
+    certbot:
+        image: certbot/certbot
+        container_name: certbot
+        restart: unless-stopped
+        volumes:
+            - ./.data/certs/certbot/conf:/etc/letsencrypt
+            - ./.data/certs/certbot/www:/var/www/certbot
+        networks:
+            - crazyconsole_network
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+networks:
+    crazyconsole_network:
+        driver: bridge
